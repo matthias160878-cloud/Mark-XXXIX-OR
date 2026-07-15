@@ -5,7 +5,10 @@ import json
 import time
 import subprocess
 import threading
-import winreg
+try:
+    import winreg
+except ImportError:
+    winreg = None
 from pathlib import Path
 from datetime import datetime
 
@@ -15,7 +18,7 @@ def _find_steam_path() -> Path | None:
         (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam"),
         (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Valve\Steam"),
         (winreg.HKEY_CURRENT_USER,  r"SOFTWARE\Valve\Steam"),
-    ]
+    ] if winreg else []
     for hive, key_path in registry_keys:
         try:
             key = winreg.OpenKey(hive, key_path)
@@ -41,7 +44,7 @@ def _find_epic_path() -> Path | None:
         (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\EpicGames\EpicGamesLauncher"),
         (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\EpicGames\EpicGamesLauncher"),
         (winreg.HKEY_CURRENT_USER,  r"SOFTWARE\EpicGames\EpicGamesLauncher"),
-    ]
+    ] if winreg else []
     for hive, key_path in registry_keys:
         try:
             key = winreg.OpenKey(hive, key_path)
@@ -180,7 +183,7 @@ def _click_first_profile_by_screenshot() -> bool:
         pyautogui.click(abs_x, abs_y)
         return True
 
-    except ImportError as e:
+    except (ImportError, SystemExit) as e:
         print(f"[GameUpdater] ⚠️ Missing library: {e}")
         return False
     except Exception as e:
@@ -218,7 +221,7 @@ def _handle_steam_profile_selection() -> bool:
             print("[GameUpdater] ℹ️ No profile dialog detected — Steam already logged in")
             return False
 
-    except ImportError:
+    except (ImportError, SystemExit):
         pass
     except Exception:
         pass
@@ -509,7 +512,7 @@ def _handle_install_dialog_pyautogui(game_name: str, best_drive: dict) -> str:
     try:
         import pyautogui
         import pygetwindow as gw
-    except ImportError:
+    except (ImportError, SystemExit):
         return f"Install dialog opened for '{game_name}'. Please select '{best_drive['letter']}:' and click Install manually."
 
     pyautogui.FAILSAFE = False
