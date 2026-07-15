@@ -12,7 +12,7 @@ from datetime import datetime
 try:
     import pyautogui
     _PYAUTOGUI = True
-except ImportError:
+except (ImportError, SystemExit):
     _PYAUTOGUI = False
 
 _OS = platform.system()  # "Windows" | "Darwin" | "Linux"

@@ -108,7 +108,7 @@ def _take_screenshot() -> Path | None:
         screenshot.save(str(screenshot_path))
         print(f"[Code] 📸 Screenshot: {screenshot_path}")
         return screenshot_path
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         print(f"[Code] ⚠️ Screenshot failed: {e}")
         return None
 

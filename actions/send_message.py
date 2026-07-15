@@ -4,11 +4,15 @@
 # hardcoded tab/click sequences — works on any screen resolution.
 
 import time
-import pyautogui
 from pathlib import Path
 
-pyautogui.FAILSAFE = True
-pyautogui.PAUSE = 0.08
+try:
+    import pyautogui
+    pyautogui.FAILSAFE = True
+    pyautogui.PAUSE = 0.08
+    _PYAUTOGUI = True
+except (ImportError, SystemExit):
+    _PYAUTOGUI = False
 
 def _open_app(app_name: str) -> bool:
     """Opens an app via Windows search."""
@@ -182,6 +186,9 @@ def send_message(
         platform     : whatsapp | instagram | telegram | <any app name>
                        Default: whatsapp
     """
+    if not _PYAUTOGUI:
+        return "Message sending is unavailable: PyAutoGUI could not be loaded on this system."
+
     params       = parameters or {}
     receiver     = params.get("receiver", "").strip()
     message_text = params.get("message_text", "").strip()

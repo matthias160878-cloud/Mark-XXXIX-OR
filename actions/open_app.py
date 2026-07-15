@@ -91,7 +91,7 @@ def _launch_windows(app_name: str) -> bool:
         pyautogui.press("enter")
         time.sleep(3.0)
         return True
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         print(f"[open_app] ⚠️ Windows launch failed: {e}")
         return False
 
@@ -121,7 +121,7 @@ def _launch_macos(app_name: str) -> bool:
         pyautogui.press("enter")
         time.sleep(1.5)
         return True
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         print(f"[open_app] ⚠️ macOS Spotlight failed: {e}")
         return False
 
