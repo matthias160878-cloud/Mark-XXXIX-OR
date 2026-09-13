@@ -66,8 +66,10 @@ nötig; Skills in diesem Ordner werden automatisch gefunden.
 
 ## Zwei Stolpersteine
 
-**Skills laden beim Session-Start.** Was du mitten in einer Session hinzufügst,
-greift erst in der nächsten. Das ist kein Fehler, sondern erwartetes Verhalten.
+**Skills und Plugins laden unterschiedlich schnell.** Ein Skill, den du unter
+`skills/` ablegst, steht sofort zur Verfügung — die laufende Session findet ihn,
+ohne Neustart. Ein **Plugin** dagegen wird beim Session-Start eingelesen: Was du
+in `settings.json` einträgst, greift erst in der nächsten Session.
 
 **Doppelte Skills vermeiden.** Skills können aus drei Quellen kommen: aus diesem
 Repo, aus einem Plugin und aus den über dein Claude-Konto synchronisierten
